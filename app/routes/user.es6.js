@@ -1,5 +1,5 @@
 import express from "express";
-import User from '../models/user.es6';
+import User from '../classes/models/user.es6';
 
 let router = express();
 
@@ -63,7 +63,7 @@ router.get('/', (req, res) => {
         it = getUser();
     }
 
-    res.json(user);
+    res.json(user.value);
     res.status(200);
 });
 
@@ -90,11 +90,26 @@ router.post('/sign-in', (req, res) => {
 
 // Try to sing-up User
 router.post('/sign-up', (req, res) => {
-    res.json({
-        'status': 200,
-        'login': true
+    let user = new User(req.db);
+
+    user.save(req.body, (DBresponse) => {
+        if (DBresponse.success) {
+            res.json({
+                'status': 200,
+                'login': true
+            });
+            res.status(200);
+        } else {
+            res.json({
+                'status': 401,
+                'login': false,
+                'error': {
+                    'msg': DBresponse.error.msg
+                }
+            });
+            res.status(200);
+        }
     });
-    res.status(200);
 });
 
 // Logout user

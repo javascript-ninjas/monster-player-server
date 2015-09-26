@@ -19,6 +19,13 @@ import playlist from "./app/routes/playlist.es6";
 import invite from "./app/routes/user/invite.es6";
 import notification from "./app/routes/user/notification.es6";
 
+// Locale Configuration
+import LocaleManager from "./app/classes/localeManager.es6";
+
+// Setup LocaleManager as Global Variable
+process.localeManager = new LocaleManager('pl_PL');
+process.localeManager.load();
+
 let app = express();
 
 // view engine setup
