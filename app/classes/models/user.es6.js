@@ -1,4 +1,5 @@
 import Model from "./model.es6";
+import _ from "underscore";
 
 class User extends Model {
     getUserByID(id, callback) {
@@ -12,9 +13,9 @@ class User extends Model {
             if (oldUser.length) {
                 return callback({
                     success: false,
-                    error: {
+                    error: [{
                         msg: process.localeManager.get('SINGUP_ERROR_EMAIL_USED')
-                    }
+                    }]
                 });
             }
 
@@ -30,9 +31,9 @@ class User extends Model {
             }).error(() => {
                 callback({
                     success: false,
-                    error: {
+                    errors: [{
                         msg: process.localeManager.get('SINGUP_ERROR_NOT_DEFINED')
-                    }
+                    }]
                 })
             });
         });
