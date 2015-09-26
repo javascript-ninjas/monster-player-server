@@ -20,6 +20,25 @@ class Media extends  Model {
         });
     }
 
+    findByID(mediaID, callback) {
+        this.collection = this._getCollection();
+
+        this.collection.find({
+            id: mediaID
+        }, (errors, response) => {
+            if (response.length) {
+                callback({
+                    success: true,
+                    playlist: _.first(response)
+                });
+            } else {
+                callback({
+                    success: false
+                });
+            }
+        });
+    }
+
     save(media) {
         this.collection = this._getCollection();
 

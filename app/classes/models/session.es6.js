@@ -29,6 +29,19 @@ class Session extends  Model {
         });
     }
 
+    getUserIDFromToken(token, callback) {
+        this.collection = this._getCollection();
+
+        this.collection.find({ token: token }, (errors, results) => {
+            if (results.length) {
+                callback({
+                    success: true,
+                    userID: _.first(results).userID
+                });
+            }
+        });
+    }
+
     _getCollection() {
         return this.db.get('Sessions');
     }
