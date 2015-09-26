@@ -1,1 +1,1 @@
-# Project X Server
+# MonsterPlayer Server
