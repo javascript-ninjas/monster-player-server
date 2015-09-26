@@ -59,8 +59,6 @@ let it = getUser();
 router.post('/sign-in', (req, res) => {
     let user = new User();
 
-    console.log('dsadsadsadsadsada');
-
     user.login(req.body, (DBresponse) => {
         if (DBresponse.success) {
             res.json({
@@ -68,9 +66,7 @@ router.post('/sign-in', (req, res) => {
                 'login': true,
                 'user': DBresponse.user
             });
-            res.status(200);
         } else {
-            res.status(401);
             res.json({
                 'status': "error",
                 'login': false,
