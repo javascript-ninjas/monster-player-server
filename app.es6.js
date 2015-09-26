@@ -18,6 +18,7 @@ import media from "./app/routes/media.es6";
 import playlist from "./app/routes/playlist.es6";
 import invite from "./app/routes/user/invite.es6";
 import notification from "./app/routes/user/notification.es6";
+import search from "./app/routes/search.es6";
 
 // Locale Configuration
 import LocaleManager from "./app/classes/localeManager.es6";
@@ -49,6 +50,7 @@ app.use('/user/invite', invite);
 app.use('/user', user);
 app.use('/media', media);
 app.use('/playlist', playlist);
+app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -1,37 +1,76 @@
-import Model from "./model.es6";
 import _ from "underscore";
+import Model from "./model.es6";
+import Session from "./session.es6";
 
 class User extends Model {
-    save(user, callback) {
-        this.collection = this._getCollection();
 
-        this.collection.find({ email: user.email }, (error, oldUser) => {
-            if (oldUser.length) {
+    /**
+     * Metoda obsługująca tylko i wyłącznie zapis nowego użytkownika do bazy danych
+     *
+     * @param user
+     * @param callback
+     * @private
+     */
+    _save(user, callback) {
+        this.collection.insert({
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            avatar: 'http://placehold.it/32x32'
+        }).success(() => {
+            callback({
+                success: true
+            });
+        }).error(() => {
+            callback({
+                success: false,
+                errors: [{
+                    msg: process.localeManager.get('SINGUP_ERROR_NOT_DEFINED')
+                }]
+            })
+        });
+    }
+
+    /**
+     * Metoda próbująca zapisac użytkownika do bazy danych. Najpierw sprawdza czy użytkownik istnieje już w bazie danych.
+     *
+     * @param user
+     * @param callback
+     */
+    save(user, callback) {
+        this.find(user, (DBresponse) => {
+            if (DBresponse.success) {
                 return callback({
                     success: false,
-                    error: [{
+                    errors: [{
                         msg: process.localeManager.get('SINGUP_ERROR_EMAIL_USED')
                     }]
                 });
+            } else {
+                this._save(user, callback);
             }
+        });
+    }
 
-            this.collection.insert({
-                name: user.name,
-                email: user.email,
-                password: user.password,
-                avatar: 'http://placehold.it/32x32'
-            }).success(() => {
-                callback({
-                    success: true
-                });
-            }).error(() => {
+    login(user, callback) {
+        this.find(user, (DBresponse) => {
+            if (DBresponse.success) {
+                if (DBresponse.user.password === user.password) {
+                    let session = new Session();
+                    session.create(DBresponse.user, (ses) => {
+                        callback({
+                            success: true,
+                            login: true,
+                            user: ses.user
+                        });
+                    });
+                }
+            } else {
                 callback({
                     success: false,
-                    errors: [{
-                        msg: process.localeManager.get('SINGUP_ERROR_NOT_DEFINED')
-                    }]
-                })
-            });
+                    login: false
+                });
+            }
         });
     }
 

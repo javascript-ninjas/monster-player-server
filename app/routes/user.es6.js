@@ -83,7 +83,7 @@ router.get('/:id', (req, res) => {
 router.post('/sign-in', (req, res) => {
     let user = new User();
 
-    user.find({ email: req.body.email }, (DBresponse) => {
+    user.login(req.body, (DBresponse) => {
         if (DBresponse.success) {
             res.json({
                 'status': 200,
@@ -119,9 +119,7 @@ router.post('/sign-up', (req, res) => {
             res.json({
                 'status': 401,
                 'login': false,
-                'error': {
-                    'msg': DBresponse.error.msg
-                }
+                'errors': DBresponse.errors
             });
             res.status(200);
         }
