@@ -21,6 +21,7 @@
     "serve-favicon": "~2.3.0",
     "underscore": "^1.8.3",
     "md5": "^2.0.0",
-    "request": "^2.64.0"
+    "request": "^2.64.0",
+    "promise": "^7.0.4"
   }
 }

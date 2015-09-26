@@ -1,3 +1,5 @@
 config/youtube.json
+config/soundcloud.json
+config/vimeo.json
 node_modules/
 npm-debug.log

@@ -33,7 +33,7 @@ class Youtube extends Service {
         response.items.forEach(function (item) {
             if (item.id.kind === "youtube#video") {
                 items.push({
-                    id: _.uniqueId(),
+                    id: _.uniqueId('youtube_'),
                     url: "https://www.youtube.com/watch?v=" + item.id.videoId,
                     title: item.snippet.title,
                     thumb: item.snippet.thumbnails.default.url,
