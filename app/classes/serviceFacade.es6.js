@@ -10,9 +10,7 @@ class ServiceFacade {
     }
 
     fetch(callback) {
-        this.youtube.fetch(() => {
-            callback();
-        });
+        this.youtube.fetch(callback);
     }
 }
 

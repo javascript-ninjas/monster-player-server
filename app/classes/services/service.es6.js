@@ -3,9 +3,10 @@ import request from "request";
 class Service {
     constructor() {}
 
-    fetch() {
+    fetch(callback) {
+        this.callback = callback;
+
         request(this.getApiURL(), (error, response, body) => {
-            console.log(error, response, body);
             this.onDataFetch(error,response, body);
         });
     }

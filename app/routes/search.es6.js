@@ -39,11 +39,21 @@ router.get('/:query', (req, res) => {
     let serviceFacade = new ServiceFacade();
     serviceFacade.setQuery('dupa');
 
-    serviceFacade.fetch(() => {
-        res.json({
-            status: "success",
-            items: items
-        });
+    serviceFacade.fetch((response) => {
+        if (response.success) {
+            res.json({
+                status: "success",
+                items: items
+            });
+        } else {
+            res.status(404);
+            res.json({
+                status: 'error',
+                errors: [
+                    { msg: process.localeManager.get('SERVICE_NOT_AVAILABLE') }
+                ]
+            });
+        }
     });
 });
 

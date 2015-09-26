@@ -12,12 +12,24 @@ class Youtube extends Service {
         this.query = query;
     }
 
-    onDataFetch(error, response, body) {
-        console.log(response);
+    onDataFetch(error, response) {
+        this.parse(JSON.parse(response.body));
     }
 
     getApiURL() {
         return this.url + 'part=' + this.query + '&key=' + this.key;
+    }
+
+    parse(response) {
+        if (response.error) {
+            return this.callback({
+                success: false
+            });
+        }
+
+        return this.callback({
+            success: true
+        });
     }
 }
 
