@@ -81,11 +81,27 @@ router.get('/:id', (req, res) => {
 
 // Try to sing-in User
 router.post('/sign-in', (req, res) => {
-    res.json({
-        'status': 200,
-        'login': true
+    let user = new User();
+
+    user.find({ email: req.body.email }, (DBresponse) => {
+        if (DBresponse.success) {
+            res.json({
+                'status': 200,
+                'login': true,
+                'user': DBresponse.user
+            });
+            res.status(200);
+        } else {
+            res.json({
+                'status': 401,
+                'login': false,
+                'errors': [
+                    { msg: process.localeManager.get("SINGIN_FAIL") }
+                ]
+            });
+            res.status(200);
+        }
     });
-    res.status(200);
 });
 
 // Try to sing-up User

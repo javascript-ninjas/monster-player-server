@@ -2,10 +2,6 @@ import Model from "./model.es6";
 import _ from "underscore";
 
 class User extends Model {
-    getUserByID(id, callback) {
-        this.collection = this._getCollection();
-    }
-
     save(user, callback) {
         this.collection = this._getCollection();
 
@@ -43,8 +39,20 @@ class User extends Model {
 
     }
 
-    find(callback) {
-
+    find(user, callback) {
+        this.collection = this._getCollection();
+        this.collection.find({ email: user.email }, (error, user) => {
+             if (user.length) {
+                return callback({
+                    success: true,
+                    user: _.first(user)
+                });
+             } else {
+                 return callback({
+                     success: false
+                 });
+             }
+        });
     }
 
     _getCollection() {
