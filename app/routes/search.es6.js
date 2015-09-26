@@ -43,7 +43,7 @@ router.get('/:query', (req, res) => {
         if (response.success) {
             res.json({
                 status: "success",
-                items: items
+                items: response.items
             });
         } else {
             res.status(404);
