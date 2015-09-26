@@ -13,6 +13,7 @@ let db = monk('localhost:27017/MonsterPlayer');
 
 // Routes
 import index from "./app/routes/index.es6";
+import user from "./app/routes/user.es6";
 
 let app = express();
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', index);
+app.use('/user', user);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
