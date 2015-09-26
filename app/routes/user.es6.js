@@ -86,7 +86,8 @@ router.post('/sign-up', (req, res) => {
         if (DBresponse.success) {
             res.json({
                 'status': "success",
-                'login': true
+                'login': false,
+                'user': DBresponse.user
             });
             res.status(200);
         } else {

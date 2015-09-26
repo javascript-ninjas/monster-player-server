@@ -17,9 +17,11 @@ class User extends Model {
             email: user.email,
             password: user.password,
             avatar: 'http://placehold.it/32x32'
-        }).success(() => {
+        }).success((savedUser) => {
+            console.log();
             callback({
-                success: true
+                success: true,
+                user: savedUser
             });
         }).error(() => {
             callback({
