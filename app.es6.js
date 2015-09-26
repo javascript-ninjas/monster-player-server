@@ -14,6 +14,10 @@ let db = monk('localhost:27017/MonsterPlayer');
 // Routes
 import index from "./app/routes/index.es6";
 import user from "./app/routes/user.es6";
+import media from "./app/routes/media.es6";
+import playlist from "./app/routes/playlist.es6";
+import invite from "./app/routes/user/invite.es6";
+import notification from "./app/routes/user/notification.es6";
 
 let app = express();
 
@@ -34,7 +38,11 @@ app.use((req, res, next) => {
 });
 
 app.use('/', index);
+app.use('/user/notification', notification);
+app.use('/user/invite', invite);
 app.use('/user', user);
+app.use('/media', media);
+app.use('/playlist', playlist);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

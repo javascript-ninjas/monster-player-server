@@ -1,4 +1,5 @@
 import express from "express";
+import User from '../models/user.es6';
 
 let router = express();
 
@@ -54,6 +55,7 @@ function *getUser() {
 
 let it = getUser();
 
+// Get Information about User
 router.get('/', (req, res) => {
     let user = it.next();
 
@@ -62,6 +64,63 @@ router.get('/', (req, res) => {
     }
 
     res.json(user);
+    res.status(200);
+});
+
+// Get information about specific user
+router.get('/:id', (req, res) => {
+    let user = it.next();
+
+    if (user.done) {
+        it = getUser();
+    }
+
+    res.json(user);
+    res.status(200);
+});
+
+// Try to sing-in User
+router.post('/sign-in', (req, res) => {
+    res.json({
+        'status': 200,
+        'login': true
+    });
+    res.status(200);
+});
+
+// Try to sing-up User
+router.post('/sign-up', (req, res) => {
+    res.json({
+        'status': 200,
+        'login': true
+    });
+    res.status(200);
+});
+
+// Logout user
+router.post('/logout', (req, res) => {
+    res.json({
+        'status': 200,
+        'login': false
+    });
+    res.status(200);
+});
+
+// Delete user Account
+router.delete('/', (res, req) => {
+    res.json({
+        'status': 200,
+        'login': false
+    });
+    res.status(200);
+});
+
+// Password Change
+router.post('/password-change', (res, req) => {
+    res.json({
+        'status': 200,
+        'login': false
+    });
     res.status(200);
 });
 
