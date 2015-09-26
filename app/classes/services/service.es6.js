@@ -1,4 +1,5 @@
 import request from "request";
+import md5 from "md5";
 
 class Service {
     constructor() {}
@@ -9,6 +10,10 @@ class Service {
         request(this.getApiURL(), (error, response, body) => {
             this.onDataFetch(error,response, body);
         });
+    }
+
+    getUniqueID(prefix, title) {
+        return md5(prefix + title);
     }
 
     onDataFetch() {

@@ -39,7 +39,6 @@ class ServiceFacade {
         ];
 
         Promise.all(promises).then((values) => {
-            //console.log(values[0]);
             values.forEach((value) => {
                 items = items.concat(value);
             });

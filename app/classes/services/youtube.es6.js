@@ -1,6 +1,7 @@
 import _ from "underscore";
 import Service from "./service.es6";
 import YoutubeConfig from "../../../config/youtube.json";
+import Media from "../models/media.es6";
 
 class Youtube extends Service {
     constructor() {
@@ -29,17 +30,21 @@ class Youtube extends Service {
         }
 
         let items = [];
+        let media = new Media();
 
-        response.items.forEach(function (item) {
+        response.items.forEach((item) => {
             if (item.id.kind === "youtube#video") {
-                items.push({
-                    id: _.uniqueId('youtube_'),
+                let dto = {
+                    id: this.getUniqueID('[youtube]:', item.snippet.title),
                     url: "https://www.youtube.com/watch?v=" + item.id.videoId,
                     title: item.snippet.title,
                     thumb: item.snippet.thumbnails.default.url,
                     description: item.snippet.description,
                     type: "youtube"
-                })
+                };
+
+                media.save(dto);
+                items.push(dto);
             }
         });
 

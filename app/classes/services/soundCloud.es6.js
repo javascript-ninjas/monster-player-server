@@ -1,6 +1,7 @@
 import _ from "underscore";
 import Service from "./service.es6";
 import SoundCloudConfig from "../../../config/soundcloud.json";
+import Media from "../models/media.es6";
 
 class SoundCloud extends Service {
     constructor() {
@@ -29,16 +30,20 @@ class SoundCloud extends Service {
         }
 
         let items = [];
+        let media = new Media();
 
-        response.forEach(function (item) {
-            items.push({
-                id: _.uniqueId('soundcloud_'),
+        response.forEach((item) => {
+            let dto = {
+                id: this.getUniqueID('[soundcloud]:', item.title),
                 url: item.permalink_url,
                 title: item.title,
                 thumb: item.user.avatar_url,
                 description: item.description,
                 type: "soundcloud"
-            })
+            };
+
+            media.save(dto);
+            items.push();
         });
 
         return this.callback({
