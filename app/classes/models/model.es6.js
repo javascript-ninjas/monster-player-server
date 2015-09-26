@@ -6,7 +6,7 @@ class Model {
     /**
      * @protected
      */
-    _getCollection () {
+    _getCollection() {
         throw new Error("Model#_getCollection: Every `Model` child class should overwrite `_getCollection` method.");
     }
 }

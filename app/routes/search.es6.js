@@ -1,4 +1,5 @@
 import express from "express";
+import ServiceFacade from "../classes/serviceFacade.es6";
 
 let router = express();
 let items = [
@@ -35,9 +36,14 @@ let items = [
 ];
 
 router.get('/:query', (req, res) => {
-    res.json({
-        status: "success",
-        items: items
+    let serviceFacade = new ServiceFacade();
+    serviceFacade.setQuery('dupa');
+
+    serviceFacade.fetch(() => {
+        res.json({
+            status: "success",
+            items: items
+        });
     });
 });
 

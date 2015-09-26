@@ -5,7 +5,7 @@ class LocaleManager {
         this.country = countryCode;
     }
 
-    load () {
+    load() {
         switch (this.country) {
             case 'pl_PL': this.dist = PL;
                 break;
@@ -15,7 +15,7 @@ class LocaleManager {
         }
     }
 
-    get (id) {
+    get(id) {
         return this.dist[id];
     }
 }
