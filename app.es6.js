@@ -54,9 +54,10 @@ app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    res.status(404);
+    res.json({
+        status: 'error'
+    });
 });
 
 // error handlers

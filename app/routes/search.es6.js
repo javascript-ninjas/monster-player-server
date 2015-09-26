@@ -36,7 +36,7 @@ let items = [
 
 router.get('/:query', (req, res) => {
     res.json({
-        status: 200,
+        status: "success",
         items: items
     });
 });

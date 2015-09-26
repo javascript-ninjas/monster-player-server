@@ -15,7 +15,7 @@ class Session extends  Model {
 
         this.collection.insert({
             userID: user._id,
-            token: token,
+            token: user.token,
             time: (new Date()).getTime()
         }).success(() => {
             callback({

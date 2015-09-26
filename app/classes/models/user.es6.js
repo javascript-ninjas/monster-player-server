@@ -38,7 +38,7 @@ class User extends Model {
      * @param callback
      */
     save(user, callback) {
-        this.find(user, (DBresponse) => {
+        this.findByEmail(user, (DBresponse) => {
             if (DBresponse.success) {
                 return callback({
                     success: false,
@@ -53,7 +53,7 @@ class User extends Model {
     }
 
     login(user, callback) {
-        this.find(user, (DBresponse) => {
+        this.findByEmail(user, (DBresponse) => {
             if (DBresponse.success) {
                 if (DBresponse.user.password === user.password) {
                     let session = new Session();
@@ -78,7 +78,29 @@ class User extends Model {
 
     }
 
-    find(user, callback) {
+    findByID(user, callback) {
+        this.collection = this._getCollection();
+        try {
+            this.collection.find({_id: user._id}, (error, user) => {
+                if (user.length) {
+                    return callback({
+                        success: true,
+                        user: _.first(user)
+                    });
+                } else {
+                    return callback({
+                        success: false
+                    });
+                }
+            });
+        } catch (e) {
+            return callback({
+                success: false
+            });
+        }
+    }
+
+    findByEmail(user, callback) {
         this.collection = this._getCollection();
         this.collection.find({ email: user.email }, (error, user) => {
              if (user.length) {

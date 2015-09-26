@@ -13,10 +13,10 @@ let debug = Debug('monster-player:server');
  * Server Port
  */
 // Production
-const PORT = '3000';
+// const PORT = '3000';
 
 // Staging
-// const PORT = '3001';
+const PORT = '3001';
 
 /**
  * Get port from environment and store in Express.
