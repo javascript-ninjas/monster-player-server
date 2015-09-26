@@ -18,7 +18,7 @@ class Youtube extends Service {
     }
 
     getApiURL() {
-        return this.url + '?order=viewCount&part=snippet&maxResults=25' + '&key=' + this.key;
+        return this.url + '?order=viewCount&part=snippet&maxResults=50' + '&q=' + encodeURIComponent(this.query) + '&key=' + this.key;
     }
 
     parse(response) {
@@ -31,12 +31,16 @@ class Youtube extends Service {
         let items = [];
 
         response.items.forEach(function (item) {
-            items.push({
-                id: _.uniqueId(),
-                url: "http://www.w3schools.com/tags/movie.mp4",
-                title: item.snippet.title,
-                thumb: item.snippet.thumbnails.default.url
-            })
+            if (item.id.kind === "youtube#video") {
+                items.push({
+                    id: _.uniqueId(),
+                    url: "https://www.youtube.com/watch?v=" + item.id.videoId,
+                    title: item.snippet.title,
+                    thumb: item.snippet.thumbnails.default.url,
+                    description: item.snippet.description,
+                    type: "youtube"
+                })
+            }
         });
 
         return this.callback({

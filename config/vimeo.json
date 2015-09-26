@@ -1,0 +1,8 @@
+{
+  "client_id": "0db41937f45e37fadd33df52d3e8971a3d56e5d7",
+  "client_secret": "FFjIEhtbRTfAollunn46ST4CA5upK0SVElPUJdYJUcsDgj6RjSsUk3btOLMZMMUpQFc7N2tquu+WXwfvWCipEVb3uqzbaaSw4J+LOxrs6tHzfmNq3rrTZ3YleaGPbAFe",
+  "auth_url": "https://api.vimeo.com/oauth/authorize",
+  "access_token_url": "https://api.vimeo.com/oauth/access_token",
+  "token": "9ca52562aff516e5a6356ad8979ccaa6",
+  "api_url": "https://api.vimeo.com/videos?"
+}
