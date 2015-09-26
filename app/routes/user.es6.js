@@ -90,7 +90,7 @@ router.post('/sign-in', (req, res) => {
 
 // Try to sing-up User
 router.post('/sign-up', (req, res) => {
-    let user = new User(req.db);
+    let user = new User();
 
     user.save(req.body, (DBresponse) => {
         if (DBresponse.success) {

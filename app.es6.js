@@ -26,6 +26,9 @@ import LocaleManager from "./app/classes/localeManager.es6";
 process.localeManager = new LocaleManager('pl_PL');
 process.localeManager.load();
 
+// Setup database as GlobalVariable
+process.db = db;
+
 let app = express();
 
 // view engine setup
@@ -39,10 +42,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use((req, res, next) => {
-    req.db = db;
-    next();
-});
 
 app.use('/', index);
 app.use('/user/notification', notification);
