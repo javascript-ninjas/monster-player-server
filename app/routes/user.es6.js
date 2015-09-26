@@ -140,14 +140,26 @@ router.get('/:id', (req, res) => {
 
 // Get Information about User
 router.get('/', (req, res) => {
-    let user = it.next();
+    let userObj = {
+        email: req.headers.email,
+        password: req.headers.password,
+        token: req.headers.token
+    };
+    let user = new User();
 
-    if (user.done) {
-        it = getUser();
-    }
-
-    res.json(user.value);
-    res.status(200);
+    user.findByEmail(userObj, (DBresponse) => {
+        if (DBresponse.success) {
+            res.json({
+                'status': 'success',
+                'user': DBresponse.user
+            });
+        } else {
+            res.status(404);
+            res.json({
+                'status': 'error'
+            });
+        }
+    });
 });
 
 // Delete user Account
