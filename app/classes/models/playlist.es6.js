@@ -1,45 +1,36 @@
 import _ from "underscore";
-import md5 from "md5";
 import Model from "./model.es6";
 import Media from "./media.es6";
 
 class Playlist extends  Model {
 
     find(playlist, user, callback) {
-        this.collection = this._getCollection();
-
         this.collection.find({
             name: playlist.name,
             owner: user._id
         }, (errors, response) => {
             if (response.length) {
-                callback({
+                return callback({
                     success: true,
                     playlist: _.first(response)
                 });
             } else {
-                callback({
-                    success: false
-                });
+                return this._errorHandler(callback);
             }
         });
     }
 
     findByID(playlistID, callback) {
-        this.collection = this._getCollection();
-
         this.collection.find({
             _id: playlistID
         }, (errors, response) => {
             if (response.length) {
-                callback({
+                return callback({
                     success: true,
                     playlist: _.first(response)
                 });
             } else {
-                callback({
-                    success: false
-                });
+                return this._errorHandler(callback);
             }
         });
     }
@@ -54,37 +45,31 @@ class Playlist extends  Model {
         collection.find(dto, (errors, results) => {
             if (!results.length) {
                 collection.insert(dto).success((relation) => {
-                    callback({
+                    return callback({
                         success: true,
                         relation: relation
-                    })
+                    });
                 });
             }
         });
     }
 
     save(playlist, user, callback) {
-        this.collection = this._getCollection();
-
         this.find(playlist, user, (response) => {
             if (!response.success) {
                 this.collection.insert({
                     name: playlist.name,
                     owner: user._id
                 }).success((newPlaylist) => {
-                    callback({
+                    return callback({
                         success: true,
                         playlist: newPlaylist
                     });
                 }).error(() => {
-                    callback({
-                        success: false
-                    });
+                    return this._errorHandler(callback);
                 });
             } else {
-                callback({
-                    status: false
-                })
+                return this._errorHandler(callback);
             }
         });
     }

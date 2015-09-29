@@ -9,7 +9,6 @@ class Session extends  Model {
     }
 
     create(user, callback) {
-        this.collection = this._getCollection();
         let token = _.uniqueId(user._id + '_');
         user.token = md5(token);
 
@@ -18,20 +17,16 @@ class Session extends  Model {
             token: user.token,
             time: (new Date()).getTime()
         }).success(() => {
-            callback({
+            return callback({
                 success: true,
                 user: user
             });
         }).error(() => {
-            callback({
-                success: false
-            });
+            return this._errorHandler(callback);
         });
     }
 
     getUserIDFromToken(token, callback) {
-        this.collection = this._getCollection();
-
         this.collection.find({ token: token }, (errors, results) => {
             if (results.length) {
                 callback({

@@ -7,12 +7,12 @@ let router = express();
 router.post('/sign-in', (req, res) => {
     let user = new User();
 
-    user.login(req.body, (DBresponse) => {
-        if (DBresponse.success) {
+    user.login(req.body, (response) => {
+        if (response.success) {
             res.json({
                 'status': "success",
                 'login': true,
-                'user': DBresponse.user
+                'user': response.user
             });
         } else {
             res.json({
@@ -30,19 +30,19 @@ router.post('/sign-in', (req, res) => {
 router.post('/sign-up', (req, res) => {
     let user = new User();
 
-    user.save(req.body, (DBresponse) => {
-        if (DBresponse.success) {
+    user.save(req.body, (response) => {
+        if (response.success) {
             res.json({
                 'status': "success",
                 'login': false,
-                'user': DBresponse.user
+                'user': response.user
             });
             res.status(200);
         } else {
             res.json({
                 'status': "error",
                 'login': false,
-                'errors': DBresponse.errors
+                'errors': response.errors
             });
             res.status(200);
         }
@@ -65,11 +65,11 @@ router.get('/:id', (req, res) => {
 
     console.log('dsadsadsada');
 
-    user.findByID({ _id: id }, (DBresponse) => {
-        if (DBresponse.success) {
+    user.find({ _id: id }, (response) => {
+        if (response.success) {
             res.json({
                 'status': "success",
-                'user': DBresponse.user
+                'user': response.user
             });
         } else {
             res.status(404);
@@ -92,11 +92,11 @@ router.get('/', (req, res) => {
     };
     let user = new User();
 
-    user.findByEmail(userObj, (DBresponse) => {
-        if (DBresponse.success) {
+    user.find(userObj, (response) => {
+        if (response.success) {
             res.json({
                 'status': 'success',
-                'user': DBresponse.user
+                'user': response.user
             });
         } else {
             res.status(404);
@@ -108,7 +108,7 @@ router.get('/', (req, res) => {
 });
 
 // Delete user Account
-router.delete('/', (res, req) => {
+router.delete('/', (req, res) => {
     res.json({
         'status': "success",
         'login': false
@@ -117,7 +117,7 @@ router.delete('/', (res, req) => {
 });
 
 // Password Change
-router.post('/password-change', (res, req) => {
+router.post('/password-change', (req, res) => {
     res.json({
         'status': "success",
         'login': false
