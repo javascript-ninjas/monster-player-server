@@ -24,12 +24,9 @@ class User extends Model {
                 user: savedUser
             });
         }).error(() => {
-            callback({
-                success: false,
-                errors: [{
-                    msg: process.localeManager.get('SINGUP_ERROR_NOT_DEFINED')
-                }]
-            })
+            this._errorHandler(callback, [{
+                msg: process.localeManager.get('SINGUP_ERROR_NOT_DEFINED')
+            }]);
         });
     }
 
@@ -40,27 +37,31 @@ class User extends Model {
      * @param callback
      */
     save(user, callback) {
-        this.findByEmail(user, (DBresponse) => {
-            if (DBresponse.success) {
-                return callback({
-                    success: false,
-                    errors: [{
-                        msg: process.localeManager.get('SINGUP_ERROR_EMAIL_USED')
-                    }]
-                });
+        this.find(user, (response) => {
+            // Znaleziono użytkownika, trzeba zgłosić błąd.
+            if (response.success) {
+                return this._errorHandler(callback, [{
+                    msg: process.localeManager.get('SINGUP_ERROR_EMAIL_USED')
+                }]);
             } else {
                 this._save(user, callback);
             }
         });
     }
 
+    /**
+     * Metoda probująca stworzyć nową sesję dla użytkownika.
+     * @param  {Object}   user     [description]
+     * @param  {Function} callback [description]
+     * @return {Function}            [description]
+     */
     login(user, callback) {
-        this.findByEmail(user, (DBresponse) => {
-            if (DBresponse.success) {
-                if (DBresponse.user.password === user.password) {
+        this.find(user, (response) => {
+            if (response.success) {
+                if (response.user.password === user.password) {
                     let session = new Session();
-                    session.create(DBresponse.user, (ses) => {
-                        callback({
+                    session.create(response.user, (ses) => {
+                        return callback({
                             success: true,
                             login: true,
                             user: ses.user
@@ -68,7 +69,7 @@ class User extends Model {
                     });
                 }
             } else {
-                callback({
+                return callback({
                     success: false,
                     login: false
                 });
@@ -76,48 +77,35 @@ class User extends Model {
         });
     }
 
-    update(callback) {
-
-    }
-
-    findByID(user, callback) {
-        this.collection = this._getCollection();
+    /**
+     * Metoda wyszukująca obiekt użytkownika w bazie danych.
+     * @param  {[type]}   user     [description]
+     * @param  {Function} callback [description]
+     * @return {[type]}            [description]
+     */
+    find(user, callback) {
         try {
-            this.collection.find({_id: user._id}, (error, user) => {
+            this.collection.find(user, (error, user) => {
                 if (user.length) {
                     return callback({
                         success: true,
                         user: _.first(user)
                     });
                 } else {
-                    return callback({
-                        success: false
-                    });
+                    return this._errorHandler(callback);
                 }
             });
         } catch (e) {
-            return callback({
-                success: false
-            });
+            return this._errorHandler(callback);
         }
     }
 
-    findByEmail(user, callback) {
-        this.collection = this._getCollection();
-        this.collection.find({ email: user.email }, (error, user) => {
-             if (user.length) {
-                return callback({
-                    success: true,
-                    user: _.first(user)
-                });
-             } else {
-                 return callback({
-                     success: false
-                 });
-             }
-        });
-    }
-
+    /**
+     * [_getCollection description]
+     * 
+     * @overwrite Model
+     * @return {[type]} [description]
+     */
     _getCollection() {
         return this.db.get('Users');
     }
