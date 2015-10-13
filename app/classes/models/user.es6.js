@@ -102,7 +102,7 @@ class User extends Model {
 
     /**
      * [_getCollection description]
-     * 
+     *
      * @overwrite Model
      * @return {[type]} [description]
      */
